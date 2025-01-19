@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Planner with Image Background</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom image background */
+    .bg-custom {
+      background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGltZSUyMHRhYmxlJTIwcHJvZmVzc2lvbmFsfGVufDB8fDB8fHww'); /* Replace with your own image URL */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col justify-center items-center text-white font-sans bg-custom">
+
+  <div class="w-full max-w-4xl px-6">
+    <h1 class="text-3xl font-bold text-center mb-6">Task Planner with Time Tracker</h1>
+    <div class="overflow-hidden rounded-lg shadow-lg bg-black bg-opacity-50">
+      <table class="w-full table-auto text-left">
+        <thead>
+          <tr class="bg-gray-800 text-white">
+            <th class="px-4 py-2">Day</th>
+            <th class="px-4 py-2">Task</th>
+            <th class="px-4 py-2">Time</th>
+            <th class="px-4 py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody id="taskTableBody">
+          <!-- Dynamic tasks will appear here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 flex justify-center gap-4">
+      <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition" onclick="addTask()">Add Task</button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition" onclick="resetTasks()">Reset Tasks</button>
+      <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition" onclick="showCompletedTasks()">What I Have Done</button>
+    </div>
+  </div>
+
+  <!-- Modal for showing completed tasks -->
+  <div id="completedTasksModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
+    <div class="bg-white text-black w-3/4 max-w-lg rounded-lg p-6">
+      <h2 class="text-xl font-bold mb-4">Completed Tasks</h2>
+      <ul id="completedTasksList" class="list-disc list-inside text-gray-700">
+        <!-- Completed tasks will be dynamically added here -->
+      </ul>
+      <button class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Task data
+    const tasks = [
+      { day: "Day 1", task: "Update Resume", time: "1 hour", done: false, timeTaken: null },
+      { day: "Day 2", task: "Update LinkedIn", time: "2 hours", done: false, timeTaken: null },
+      { day: "Day 3", task: "GitHub Repos", time: "2 hours", done: false, timeTaken: null },
+      { day: "Day 4", task: "Start Portfolio", time: "2 hours", done: false, timeTaken: null },
+    ];
+
+    // Render tasks dynamically
+    function renderTasks() {
+      const tableBody = document.querySelector("#taskTableBody");
+      tableBody.innerHTML = ""; // Clear existing tasks
+      tasks.forEach((task, index) => {
+        const row = document.createElement("tr");
+        row.classList.add("border-b", "border-gray-700");
+        row.innerHTML = `
+          <td class="px-4 py-2 ${task.done ? 'line-through text-green-400' : ''}">${task.day}</td>
+          <td class="px-4 py-2 ${task.done ? 'line-through text-green-400' : ''}">${task.task}</td>
+          <td class="px-4 py-2">${task.time}</td>
+          <td class="px-4 py-2">
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" onclick="markDone(${index})">
+              ${task.done ? 'Undo' : 'Done'}
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Mark task as done or undone
+    function markDone(index) {
+      if (!tasks[index].done) {
+        const timeTaken = prompt("How much time did it take to complete this task (e.g., 1 hour)?");
+        tasks[index].timeTaken = timeTaken;  // Capture time taken to complete the task
+      }
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    // Add a new task
+    function addTask() {
+      const newTask = prompt("Enter a new task (format: Day,Task,Time):");
+      if (newTask) {
+        const [day, task, time] = newTask.split(",");
+        if (day && task && time) {
+          tasks.push({ day: day.trim(), task: task.trim(), time: time.trim(), done: false, timeTaken: null });
+          renderTasks();
+        } else {
+          alert("Please enter the task in the correct format (Day, Task, Time).");
+        }
+      }
+    }
+
+    // Reset all tasks
+    function resetTasks() {
+      if (confirm("Are you sure you want to reset all tasks?")) {
+        tasks.forEach(task => {
+          task.done = false;
+          task.timeTaken = null;
+        });
+        renderTasks();
+      }
+    }
+
+    // Show completed tasks in a modal
+    function showCompletedTasks() {
+      const completedTasks = tasks.filter(task => task.done);
+      const completedTasksList = document.getElementById("completedTasksList");
+      completedTasksList.innerHTML = ""; // Clear the list
+      if (completedTasks.length === 0) {
+        completedTasksList.innerHTML = "<li>No tasks completed yet.</li>";
+      } else {
+        completedTasks.forEach(task => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `${task.day} - ${task.task} (${task.time}) | Time Taken: ${task.timeTaken}`;
+          completedTasksList.appendChild(listItem);
+        });
+      }
+      document.getElementById("completedTasksModal").classList.remove("hidden");
+    }
+
+    // Close the modal
+    function closeModal() {
+      document.getElementById("completedTasksModal").classList.add("hidden");
+    }
+
+    // Daily Reminder
+    function dailyReminder() {
+      const todayTasks = tasks.filter(task => task.day === `Day ${new Date().getDate()}` && !task.done);
+      if (todayTasks.length > 0) {
+        const taskList = todayTasks.map(task => `${task.task} (${task.time})`).join(", ");
+        alert(`Reminder: Today's tasks are: ${taskList}`);
+      }
+    }
+
+    // Run daily reminder at startup
+    dailyReminder();
+
+    // Initial render
+    renderTasks();
+  </script>
+</body>
+</html>
