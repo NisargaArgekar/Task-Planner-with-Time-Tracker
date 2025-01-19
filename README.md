@@ -38,60 +38,54 @@ cd your-repository
 Run the Application:
 
 Open the index.html file in your browser to launch the app.
-How to Use
 
-###Add a New Task:
+#How to Use
+-->Add a New Task:
+    Click the Add Task button and enter the task details in the format:
+    Example: Day 1, Complete Portfolio, 2 hours.
+-->Mark a Task as Done:
+    Click the Done button for a task and log the time taken to complete it.
+-->View Completed Tasks:
+    Click What I Have Done to review all completed tasks with their logged times.
+-->Reset Tasks:
+    Use the Reset Tasks button to clear all tasks and start over.
 
-##Click the Add Task button and enter the task details in the format:
-sql
-Copy
-Edit
-Day, Task, Time
-Example: Day 1, Complete Portfolio, 2 hours.
-Mark a Task as Done:
+#Technologies Used
+-->HTML: For structuring the webpage.
+-->CSS (Tailwind): For styling and responsiveness.
+-->JavaScript: For dynamic task management, time tracking, and user interactions.
 
-Click the Done button for a task and log the time taken to complete it.
-View Completed Tasks:
+#Customization Options
 
-Click What I Have Done to review all completed tasks with their logged times.
-Reset Tasks:
+-->Change Background Image:Update the background-image property in the .bg-custom class inside the <style> block.
 
-Use the Reset Tasks button to clear all tasks and start over.
-Technologies Used
-HTML: For structuring the webpage.
-CSS (Tailwind): For styling and responsiveness.
-JavaScript: For dynamic task management, time tracking, and user interactions.
-Customization Options
-Change Background Image:
+-->Add Initial Tasks:Modify the tasks array in the JavaScript section to set up default tasks.
 
-Update the background-image property in the .bg-custom class inside the <style> block.
-Add Initial Tasks:
+-->Daily Reminder Logic:Customize the dailyReminder() function to adjust task reminders as needed.
 
-Modify the tasks array in the JavaScript section to set up default tasks.
-Daily Reminder Logic:
 
-Customize the dailyReminder() function to adjust task reminders as needed.
-Future Enhancements
-Persistence:
+#Future Enhancements
 
-Use local storage to save tasks and their statuses between sessions.
-Enhanced Analytics:
+-->Persistence:
+    Use local storage to save tasks and their statuses between sessions.
 
-Add visual charts to track time spent on tasks over the week.
-Calendar Integration:
+-->Enhanced Analytics:
+    Add visual charts to track time spent on tasks over the week.
 
-Include a calendar view for task scheduling and progress tracking.
-Dark/Light Mode:
+-->Calendar Integration:
+    Include a calendar view for task scheduling and progress tracking.
 
-Add an option to switch between dark and light themes.
+-->Dark/Light Mode:    
+    Add an option to switch between dark and light themes.
+
 Screenshots
 
 
-Contributing
+#Contributing
 Contributions are welcome! Feel free to open issues or submit pull requests for:
+-->Bug fixes
+-->New features
+-->Code optimizations
 
-Bug fixes
-New features
-Code optimizations
-License
+#License
 This project is licensed under the MIT License. See the LICENSE file for more details.
